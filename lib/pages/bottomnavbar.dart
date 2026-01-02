@@ -42,7 +42,7 @@ class BottomNav extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: "Buy"),
           BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: "Sell"),
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: "Chat"),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: "Profile"),
         ],
         onTap: onTap,
       ),

@@ -36,3 +36,31 @@ class Appwidget {
     );
   }
 }
+
+// Text style helper functions for HomeScreen
+TextStyle oswald({double? size, FontWeight? weight, Color? color}) {
+  return TextStyle(
+    fontSize: size ?? 16,
+    fontWeight: weight ?? FontWeight.normal,
+    color: color ?? Colors.black,
+    fontFamily: 'Oswald',
+  );
+}
+
+TextStyle poppins({double? size, FontWeight? weight, Color? color}) {
+  return TextStyle(
+    fontSize: size ?? 16,
+    fontWeight: weight ?? FontWeight.normal,
+    color: color ?? Colors.black,
+    fontFamily: 'Poppins',
+  );
+}
+
+TextStyle inter({double? size, FontWeight? weight, Color? color}) {
+  return TextStyle(
+    fontSize: size ?? 16,
+    fontWeight: weight ?? FontWeight.normal,
+    color: color ?? Colors.black,
+    fontFamily: 'Inter',
+  );
+}

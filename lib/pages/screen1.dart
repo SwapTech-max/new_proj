@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:new_proj/widgets/widgets_support.dart';
-import 'package:new_proj/pages/bottomnavbar.dart';
 import 'package:new_proj/pages/screen2.dart';
 import 'package:new_proj/pages/car_detail_screen.dart';
 import 'package:new_proj/services/car_service.dart';
@@ -17,9 +16,14 @@ class Screen1 extends StatefulWidget {
 }
 
 class _Screen1State extends State<Screen1> {
-  String selectedFilter = 'Filters';
-  String selectedFilterValue = '';
+  /// MUST be non-null (your FilterDropdown requires it)
+  String selectedFilter = 'All';
+
+  /// Car list
   List<Car> carList = CarService.getVipCars();
+
+  /// Filter options must be List<Map<String, String>>
+  final List<Map<String, String>> filterOptions = CarService.getFilterOptions();
 
   @override
   Widget build(BuildContext context) {
@@ -44,30 +48,36 @@ class _Screen1State extends State<Screen1> {
                     "Find your perfect Car from verified sellers",
                     style: Appwidget.semiboldTextFeildStyle(),
                   ),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 10),
+
+                  /// FILTER DROPDOWN (MATCHES YOUR WIDGET EXACTLY)
                   FilterDropdown(
                     selectedFilter: selectedFilter,
-                    filterOptions: CarService.getFilterOptions(),
+                    filterOptions: filterOptions,
                     onFilterSelected: (filter) {
                       setState(() {
                         selectedFilter = filter;
-                        // TODO: Implement actual filtering logic
+                        // filtering logic can be added later
                       });
                     },
                   ),
+
                   const SizedBox(height: 8),
+
+                  /// CAR GRID
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: carList.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.75,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.75,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
                       itemBuilder: (context, index) {
                         final car = carList[index];
                         return CarCard(
@@ -78,7 +88,7 @@ class _Screen1State extends State<Screen1> {
                               MaterialPageRoute(
                                 builder: (context) => CarDetailScreen(
                                   car: car,
-                                  carImages: [
+                                  carImages: const [
                                     'assets/images/car_1.jpg',
                                     'assets/images/car_2.jpg',
                                     'assets/images/car_3.png',
@@ -88,13 +98,13 @@ class _Screen1State extends State<Screen1> {
                             );
                           },
                           onBookVisit: () {
-                            // TODO: Implement book visit
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Book visit for ${car.name}')),
+                              SnackBar(
+                                content: Text('Book visit for ${car.name}'),
+                              ),
                             );
                           },
                           onBuyNow: () {
-                            // TODO: Implement buy now
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Buy now: ${car.name}')),
                             );
@@ -104,45 +114,11 @@ class _Screen1State extends State<Screen1> {
                     ),
                   ),
 
-                  // EXPLORE EV CLUB
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      "EXPLORE EV CLUB",
-                      style: Appwidget.boldTextFeildStyle(),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      scrollDirection: Axis.horizontal,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: CarService.getEvClubImages().length,
-                      separatorBuilder: (context, index) => const SizedBox(width: 12),
-                      itemBuilder: (context, index) => ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          CarService.getEvClubImages()[index],
-                          height: 100,
-                          width: 150,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Container(
-                            height: 100,
-                            width: 150,
-                            color: Colors.grey[300],
-                            child: const Icon(Icons.image, size: 40),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: 10),
 
-                  // MARCH OFFERS
+                  /// MARCH OFFERS
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 6, right: 8),
+                    padding: const EdgeInsets.only(left: 8, top: 6, right: 8),
                     child: Row(
                       children: [
                         Expanded(
@@ -151,59 +127,20 @@ class _Screen1State extends State<Screen1> {
                             style: Appwidget.boldTextFeildStyle(),
                           ),
                         ),
-                        const SizedBox(width: 8),
                         FloatingActionButton.small(
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const Screen2()),
+                              MaterialPageRoute(
+                                builder: (context) => const Screen2(),
+                              ),
                             );
                           },
-                          child: const Icon(
-                            Icons.arrow_forward,
-                            size: 20,
-                            color: Color.fromARGB(255, 11, 11, 11),
-                          ),
+                          child: const Icon(Icons.arrow_forward, size: 20),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 1),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(blurRadius: 6, color: Colors.grey.shade300),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12),
-                            ),
-                            child: Image.asset(
-                              'assets/images/march.png',
-                              height: 150,
-                              width: double.infinity,
-                              fit: BoxFit.fill,
-                              errorBuilder: (context, error, stackTrace) => Container(
-                                height: 150,
-                                width: double.infinity,
-                                color: Colors.grey[300],
-                                child: const Icon(Icons.image, size: 40),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                 ],
               ),
             ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:new_proj/pages/buyerdashboard/profile_documents_screen.dart';
 import 'package:new_proj/pages/screen1.dart';
+import 'package:new_proj/pages/home_screen.dart';
 import 'package:new_proj/pages/bottomnavbar.dart';
 import 'package:new_proj/pages/sellerprofile.dart';
+import 'package:new_proj/screens/profile/profile_screen.dart';
+import 'package:new_proj/screens/chat/chat_screen.dart';
 import 'my_bookings_screen.dart';
 import 'saved_cars_screens.dart';
 import 'payments_screen.dart';
@@ -21,11 +24,12 @@ class BuyerDashboardScaffold extends StatefulWidget {
 
 class _BuyerDashboardScaffoldState extends State<BuyerDashboardScaffold> {
   late int _currentIndex;
+  
   final List<Widget> _mainSections = [
-    const Screen1(), // VIP car screen (Home tab - index 0)
-    const BuyerDashboardScreen(), // BUY tab (index 1)
+    const HomeScreen(), // Home tab (index 0) - Main landing page
+    const Screen1(), // Buy tab (index 1) - VIP car listings screen
     const SellerDashboardProfileKYC(), // SELL tab (index 2)
-    const Placeholder(child: Center(child: Text('Chat'))), // Chat tab (index 3)
+    const ProfileScreen(), // Profile tab (index 3)
   ];
 
   @override
@@ -38,6 +42,15 @@ class _BuyerDashboardScaffoldState extends State<BuyerDashboardScaffold> {
     setState(() => _currentIndex = idx);
   }
 
+  void _openChatScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const ChatScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +59,15 @@ class _BuyerDashboardScaffoldState extends State<BuyerDashboardScaffold> {
         currentIndex: _currentIndex,
         onTap: _onTabSelected,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openChatScreen,
+        backgroundColor: Colors.pink,
+        child: const Icon(
+          Icons.chat_bubble_outline,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
